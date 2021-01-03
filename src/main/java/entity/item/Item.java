@@ -1,11 +1,18 @@
-package entity;
+package entity.item;
+
+import entity.BaseEntity;
+import entity.Category;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "DTYPE")
 @Table(name = "ITEM")
-public class Item {
+public abstract class Item extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
@@ -23,12 +30,13 @@ public class Item {
     @ManyToMany(mappedBy = "items")
     private List<Category> categories;
 
-    public Item() {}
+    public Item() { }
 
     public Item(String name, Integer price, Integer stockQuantity) {
         this.name = name;
         this.price = price;
         this.stockQuantity = stockQuantity;
+        this.categories = new ArrayList<>();
     }
 
     public Integer getPrice() {
@@ -39,13 +47,7 @@ public class Item {
         this.stockQuantity -= count;
     }
 
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", stockQuantity=" + stockQuantity +
-                '}';
+    public void addCategory(Category category) {
+        this.categories.add(category);
     }
 }
