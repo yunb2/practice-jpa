@@ -1,3 +1,6 @@
+import entity.Delivery;
+import entity.Order;
+import entity.OrderItem;
 import entity.item.Album;
 import entity.item.Book;
 import entity.item.Movie;
@@ -35,15 +38,34 @@ public class Main {
 
     private static void test(EntityManager em) {
 
-        Album album = new Album("album", 20000, 1000, "yun", "...");
-        em.persist(album);
+        /* 영속성 전이를 사용하기 전
+        Delivery delivery = new Delivery();
+        em.persist(delivery);
 
-        Book book = new Book("book", 15000, 2000, "yun", "123abc789");
-        em.persist(book);
+        OrderItem orderItem1 = new OrderItem();
+        OrderItem orderItem2 = new OrderItem();
+        em.persist(orderItem1);
+        em.persist(orderItem2);
 
-        Movie movie = new Movie("movie", 10000, 500, "yun", "yun");
-        em.persist(movie);
+        Order order = new Order();
+        order.setDelivery(delivery);
+        order.addOrderItem(orderItem1);
+        order.addOrderItem(orderItem2);
 
+        em.persist(order);
+        */
+
+        // 영속성 전이를 사용한 후
+        Delivery delivery = new Delivery();
+        OrderItem orderItem1 = new OrderItem();
+        OrderItem orderItem2 = new OrderItem();
+
+        Order order = new Order();
+        order.setDelivery(delivery);
+        order.addOrderItem(orderItem1);
+        order.addOrderItem(orderItem2);
+
+        em.persist(order);
     }
 
 }
